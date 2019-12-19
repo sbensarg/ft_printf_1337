@@ -11,7 +11,7 @@ printf("Controlling integer width with printf\n");
 	printf("%5d\n", -10);
 	printf("%5d\n", -123456789);
 printf("width trick\n");
-	printf("[%*d]\n", 5, 10);
+	printf("[%*s]\n", 5, "sara");
 printf("Left-justifying printf integer output\n");
 	printf("[%-5d]\n", 4);
 	printf("[%-5d]\n", 123456789);
