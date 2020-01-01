@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <fcntl.h>
+
+int main(void)
+{
+    printf("|%c|\n", 97);
+	printf("|a%ca|\n", 97);
+    printf("|%.c|\n", 'L');
+	printf("|%-.c|\n", 'L');
+	printf("|%1.c|\n", 'L');
+	printf("|%10.c|\n", 'L');
+	printf("|a%-10.ca|\n", 'L');
+	printf("|%10.c|\n", 'L');
+    printf("|%*.c|\n", -10,'L');
+	printf("|%*.c|\n", 10,'L');
+	printf("|%-*.c|\n", -10,'L');
+	printf("|%-*.c|\n", 0,'L');
+	printf("|%*.c|\n", -0,'L');
+	printf("|%-*.c|\n", -8,'L');
+	printf("|%*.c|\n", -10,'L');
+	printf("|%*.c|\n", 10,'L');
+	printf("|%*.c|\n", 0,'L');
+	printf("|%*.c|\n", 1,'L');
+	printf("|%.c|\n", 0);
+	printf("|%1.c|\n", 0);
+	printf("|%10.c|\n", 0);
+	printf("|a%-10.ca|\n", 0);
+	printf("|%10.c|\n", 0);
+    printf("|%*.c|\n", -10,0);
+	printf("|%*.c|\n", 10,0);
+	printf("|%-*.c|\n", -10,0);
+	printf("|%-*.c|\n", 0,0);
+	printf("|%*.c|\n", -0,0);
+	printf("|%-*.c|\n", -8,0);
+	printf("|%*.c|\n", -10,0);
+	printf("|%*.c|\n", 10,0);
+	printf("|%*.c|\n", 0,0);
+	printf("|%*.c|\n", 1,0);
+}

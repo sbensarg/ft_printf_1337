@@ -6,7 +6,7 @@
 /*   By: sbensarg <sbensarg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 21:56:09 by sbensarg          #+#    #+#             */
-/*   Updated: 2019/12/18 18:19:24 by sbensarg         ###   ########.fr       */
+/*   Updated: 2019/12/30 22:18:25 by sbensarg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@
 typedef     struct 
 {
     int     width;
-    int     width2;
-    int     precision_width1;
+    int     zerowidth1;
     int     precision_width2;
     int     specifier;
     int     flags;
@@ -35,7 +34,7 @@ void    ft_width_trick(int len, char c, int *i);
 s_printf    ft_getaftermod(const char **format, va_list argptr);
 void     ft_putstr(char *s, int *ptr);
 void	ft_putchar(char c, int *i);
-void	ft_putnbr(int n, int	*i);
+void	ft_putnbr(long nb, int	*i);
 size_t	ft_strlen(const char *str);
 void    handle_modaftermod(char **ptr, int *i);
 int			ft_atoi(const char *str);
@@ -43,6 +42,9 @@ int		is_format(const char *mod);
 int			len_num(long n);
 void	ft_putunsigned(unsigned int nb, int		*i);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
-char	*decToBinary(long n, int flag);
-
+char	*decToBinary(long long n, int flag);
+char	*decToBinary_p(long long n, int flag);
+char	*ft_strdup(const char *s1);
+void	*ft_memcpy(void *dest, const void *src, size_t n);
+char	*ft_strjoin(char const *s1, char const *s2);
 #endif

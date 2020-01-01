@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME=ft_printf.a
+NAME=libftprintf.a
 SRCS= *.c
 FLAGS= -Wall -Wextra -Werror
 CC=gcc

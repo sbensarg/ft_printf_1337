@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <fcntl.h>
+#include "ft_printf.h"
+
+int main(void)
+{
+    ft_printf("|%p|\n", (void *)0x100);
+	ft_printf("|%p|\n", (void *)UINT64_MAX);
+	ft_printf("|%p|\n", (void *)0x0);
+	ft_printf("|a%pa|\n", (void *)0x100);
+	ft_printf("|a%pa|\n", (void *)UINT64_MAX);
+	ft_printf("|a%pa|\n", (void *)0);
+    ft_printf("|%2p|\n", (void *)100);
+	ft_printf("|%3p|\n", (void *)100);
+	ft_printf("|%4p|\n", (void *)100);
+	ft_printf("|a%4pa|\n", (void *)100);
+	ft_printf("|%6p|\n", (void *)100);
+    ft_printf("|%4p|\n", (void *)0x0);
+	ft_printf("|%1p|\n", (void *)0x0);
+	ft_printf("|a%1pa|\n", (void *)0x0);
+    ft_printf("|%-2p|\n", (void *)100);
+	ft_printf("|%-3p|\n", (void *)100);
+	ft_printf("|%-4p|\n", (void *)100);
+	ft_printf("|a%-4pa|\n", (void *)100);
+	ft_printf("|%-6p|\n", (void *)100);
+    ft_printf("|%-4p|\n", (void *)0x0);
+	ft_printf("|%-1p|\n", (void *)0x0);
+	ft_printf("|a%-1pa|\n", (void *)0x0);
+    ft_printf("|%.p|\n", (void *)100);
+	ft_printf("|%.p|\n", (void *)100);
+	ft_printf("|%-.p|\n", (void *)100);
+	ft_printf("|%1.p|\n", (void *)100);
+	ft_printf("|%10.p|\n", (void *)100);
+	ft_printf("|a%-10.pa|\n", (void *)100);
+	ft_printf("|%10.p|\n", (void *)100);
+    ft_printf("|%*.p|\n", -10,(void *)100);
+	ft_printf("|%*.p|\n", 10,(void *)100);
+	ft_printf("|%-*.p|\n", -10,(void *)100);
+	ft_printf("|%-*.p|\n", 0,(void *)100);
+	ft_printf("|%*.p|\n", -0,(void *)100);
+	ft_printf("|%-*.p|\n", -8,(void *)100);
+	ft_printf("|%*.p|\n", -10,(void *)100);
+	ft_printf("|%*.p|\n", 10,(void *)100);
+	ft_printf("|%*.p|\n", 0,(void *)100);
+	ft_printf("|%*.p|\n", 1,(void *)100);
+	ft_printf("|%.p|\n", (void *)0x0);
+	ft_printf("|%1.p|\n", (void *)0x0);
+	ft_printf("|%10.p|\n", (void *)0x0);
+	ft_printf("|a%-10.pa|\n", (void *)0x0);
+	ft_printf("|%10.p|\n", (void *)0x0);
+    ft_printf("|%*.p|\n", -10,(void *)0x0);
+	ft_printf("|%*.p|\n", 10,(void *)0x0);
+	ft_printf("|%-*.p|\n", -10,(void *)0x0);
+	ft_printf("|%-*.p|\n", 0,(void *)0x0);
+	ft_printf("|%*.p|\n", -0,(void *)0x0);
+	ft_printf("|%-*.p|\n", -8,(void *)0x0);
+	ft_printf("|%*.p|\n", -10,(void *)0x0);
+	ft_printf("|%*.p|\n", 10,(void *)0x0);
+	ft_printf("|%*.p|\n", 0,(void *)0x0);
+	ft_printf("|%*.p|\n", 1,(void *)0x0);
+}

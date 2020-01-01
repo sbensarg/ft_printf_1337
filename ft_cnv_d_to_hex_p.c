@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cnv_d_to_hex.c                                  :+:      :+:    :+:   */
+/*   ft_cnv_d_to_hex_p.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sbensarg <sbensarg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/28 00:16:36 by sbensarg          #+#    #+#             */
-/*   Updated: 2019/12/30 22:17:07 by sbensarg         ###   ########.fr       */
+/*   Created: 2019/12/30 22:16:04 by sbensarg          #+#    #+#             */
+/*   Updated: 2019/12/30 22:23:07 by sbensarg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*ft_del_zeros(char	*ret)
+char	*ft_del_zeros_p(char	*ret)
 {
 	char	*tmp;
 	int	i;
@@ -37,7 +37,7 @@ char	*ft_del_zeros(char	*ret)
 	return (tmp);
 }
 
-char *ft_convert_hex(char *ptr, int flag)
+char *ft_convert_hex_p(char *ptr, int flag)
 {
 	char *ret;
 	char *str;
@@ -48,8 +48,8 @@ char *ft_convert_hex(char *ptr, int flag)
 	i = 0;
 	k = 0;
 	j = 0;
-	str = malloc(9 * sizeof(char));
-	while(i < 32)
+	str = malloc(17 * sizeof(char));
+	while(i < 64)
 	{
 		ret = ft_substr(ptr, i, 4);
 		k = ((ret[0] - 48) * 2 * 2 * 2) + ((ret[1] - 48) * 2 * 2)
@@ -64,10 +64,10 @@ char *ft_convert_hex(char *ptr, int flag)
 		i += 4;
 	}
 	str[j] = '\0';
-	str = ft_del_zeros(str);
+	str = ft_del_zeros_p(str);
 	return(str);
 }
-void ft_rev_tab(char **arg)
+void ft_rev_ta_p(char **arg)
 {
 	int i;
 	int j;
@@ -90,7 +90,7 @@ void ft_rev_tab(char **arg)
 	}
 }
 
-void	ft_neg_case(char **ret)
+void	ft_neg_case_p(char **ret)
 {
 	char *ptr;
 	int i;
@@ -117,7 +117,7 @@ void	ft_neg_case(char **ret)
 	}
 }
  
-char	*decToBinary(long long n, int flag) 
+char	*decToBinary_p(long long n, int flag) 
 {
 	int		i;
 	int		sign;
@@ -125,7 +125,7 @@ char	*decToBinary(long long n, int flag)
 
 	i = 0;
 	sign = 0;
-	ret = malloc(33 * sizeof(char));
+	ret = malloc(65 * sizeof(char));
 	if(n < 0 && (sign = 1))
 		n = n * -1;
 	if ( n == 0)
@@ -137,12 +137,12 @@ char	*decToBinary(long long n, int flag)
 		i++;
 	}
 	ret[i++] = n + 48;
-	while (i < 32)
+	while (i < 64)
 		ret[i++] = '0';
 	ret[i] = '\0';
-	ft_rev_tab(&ret);
+	ft_rev_ta_p(&ret);
 	if (sign == 1)
-		ft_neg_case(&ret);
-	ret = ft_convert_hex(ret, flag);
+		ft_neg_case_p(&ret);
+	ret = ft_convert_hex_p(ret, flag);
 	return (ret);
 }

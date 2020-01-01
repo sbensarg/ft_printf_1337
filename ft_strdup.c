@@ -1,29 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr.c                                        :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sbensarg <sbensarg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/13 21:17:38 by sbensarg          #+#    #+#             */
-/*   Updated: 2019/12/29 21:53:49 by sbensarg         ###   ########.fr       */
+/*   Created: 2019/10/13 04:03:49 by sbensarg          #+#    #+#             */
+/*   Updated: 2019/12/23 22:18:19 by sbensarg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	ft_putnbr(long nb, int	*i)
+char	*ft_strdup(const char *s1)
 {
-	if (nb < 0)
-	{
-		ft_putchar('-', i);
-		nb = nb * -1;
-	}
-	if (nb >= 10)
-	{
-		ft_putnbr(nb / 10, i);
-		ft_putchar((nb % 10) + '0', i);
-	}
-	else
-		ft_putchar(nb + '0', i);
+	char *dest;
+
+	dest = (char*)malloc(sizeof(char) * (ft_strlen(s1) + 1));
+	if (dest == NULL)
+		return (NULL);
+	ft_memcpy(dest, s1, (ft_strlen(s1) + 1));
+	return (dest);
 }

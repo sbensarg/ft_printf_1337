@@ -6,61 +6,245 @@
 /*   By: sbensarg <sbensarg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 15:43:10 by sbensarg          #+#    #+#             */
-/*   Updated: 2019/12/18 18:34:37 by sbensarg         ###   ########.fr       */
+/*   Updated: 2019/12/31 08:11:21 by sbensarg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+int    put_specstr(char *str, int len, int   *i)
+{
+    int j;
+    int ret;
+
+    j = 0;
+    ret = 0;
+    while(len > 0 && str[j] != '\0')
+    {
+        ft_putchar(str[j], i);
+        ret = 1;
+        len--;
+        j++;
+    }
+    return (ret);
+}
+
+void    handle_int(long nbr, s_printf var, int *i)
+{
+    int lenstr;
+    int neg;
+    
+    neg = 0;
+    if (nbr == 0 && var.precision_width2 > -1)
+        lenstr = 0;
+    else
+        lenstr = len_num(nbr);
+    if (nbr < 0)
+    {
+        nbr *= -1;
+        neg = 1;
+    }
+    if (var.width > var.precision_width2 && var.precision_width2 >= lenstr && neg == 0)
+        ft_width_trick(var.width - var.precision_width2, ' ', i);
+    else if (var.width > var.precision_width2 && var.precision_width2 >= lenstr && neg == 1)
+        ft_width_trick(var.width - var.precision_width2 - neg, ' ', i);
+    else if (var.width > var.precision_width2 && var.precision_width2 < lenstr)
+        ft_width_trick(var.width - lenstr, ' ', i);
+    if (var.zerowidth1 > 0 && var.precision_width2 >= lenstr && neg == 0)
+        ft_width_trick(var.zerowidth1 - var.precision_width2, ' ', i);
+    else if (var.zerowidth1 > 0 && var.precision_width2 >= lenstr && neg == 1)
+        ft_width_trick(var.zerowidth1 - var.precision_width2 - neg, ' ', i);
+    else if (var.zerowidth1 > 0 && var.precision_width2 < lenstr && var.precision_width2 >= 0)
+        ft_width_trick(var.zerowidth1 - lenstr, ' ', i);
+    if (neg == 1)
+        ft_putchar('-', i);
+    if(var.precision_width2 >= 0)
+         ft_width_trick(var.precision_width2 - lenstr + neg, '0', i);
+    if (var.zerowidth1 > 0 && var.precision_width2 < 0)
+        ft_width_trick(var.zerowidth1 - lenstr, '0', i);
+    if (lenstr == 0 && var.precision_width2 >= 0)
+        len_num(nbr);
+    else
+        ft_putnbr(nbr, i);
+    if (var.width < 0 && var.precision_width2 < (var.width * -1) && lenstr >= var.precision_width2 && var.precision_width2 > 0)
+        ft_width_trick((var.width * -1) - lenstr, ' ', i);
+    else if (var.width < 0 && var.precision_width2 < (var.width * -1) && lenstr < var.precision_width2 && var.precision_width2 > 0) 
+        ft_width_trick((var.width * -1) - var.precision_width2 - neg, ' ', i);
+    else if (var.width < 0 && var.precision_width2 <= 0)
+        ft_width_trick((var.width * -1) - lenstr, ' ', i);
+    if (var.zerowidth1 < 0 && var.precision_width2 <= 0)
+        ft_width_trick((var.zerowidth1 * -1) - lenstr, ' ', i);
+}
+
+void    handle_string(char  *str, s_printf var, int   *i)
+{
+   int lenstr;
+   int  j;
+   
+    j = 0;
+    str = (str == NULL) ? "(null)" : str;
+    lenstr = ft_strlen(str);
+    if (var.width >= 0)
+    {
+        if (var.precision_width2 >= 0 && var.precision_width2 < lenstr && lenstr > 0)
+            ft_width_trick(var.width - var.precision_width2, ' ', i);
+        else
+            ft_width_trick(var.width - lenstr, ' ', i);
+    }
+    if (var.precision_width2 >= 0)
+        put_specstr(str, var.precision_width2, i);
+    else
+        ft_putstr(str, i);
+    if (var.width < 0 && (var.precision_width2 >= lenstr || lenstr == 0))
+         ft_width_trick((var.width * -1) - lenstr, ' ', i);
+    else if ((var.width < 0 && var.precision_width2 < lenstr && var.precision_width2 >= (var.width * -1)) || var.precision_width2 == -1)
+        ft_width_trick((var.width * -1) - lenstr, ' ', i);
+    else if ((var.width < 0 && var.precision_width2 < lenstr && var.precision_width2 >= (var.width * -1)) || var.precision_width2 == 0)
+        ft_width_trick((var.width * -1), ' ', i);
+    else if ( var.width < 0 && var.precision_width2 < (var.width * -1) && var.precision_width2 < lenstr && var.precision_width2 < 0)
+        ft_width_trick((var.width * -1) - lenstr, ' ', i);
+    else if (var.width < 0 && var.precision_width2 < (var.width * -1) && var.precision_width2 > 0)
+         ft_width_trick((var.width * -1) - var.precision_width2, ' ', i);
+}
+
+void handle_x(char  *str, s_printf var, int *i)
+{
+    int lenstr;
+    
+    if (str[0] == '0' && str[1] == '\0' && var.precision_width2 == 0)
+        lenstr = 0;
+    else
+        lenstr = ft_strlen(str);
+    
+    if (var.width > var.precision_width2 && var.precision_width2 >= lenstr)
+        ft_width_trick(var.width - var.precision_width2, ' ', i);
+    else if (var.width > var.precision_width2 && var.precision_width2 < lenstr)
+        ft_width_trick(var.width - lenstr, ' ', i);
+    if (var.zerowidth1 > 0 && var.precision_width2 >= lenstr)
+        ft_width_trick(var.zerowidth1 - var.precision_width2, ' ', i);
+    else if (var.zerowidth1 > 0 && var.precision_width2 < lenstr && var.precision_width2 >= 0)
+        ft_width_trick(var.zerowidth1 - lenstr, ' ', i);
+    if(var.precision_width2 >= 0)
+         ft_width_trick(var.precision_width2 - lenstr, '0', i);
+    if (var.zerowidth1 > 0 && var.precision_width2 < 0)
+        ft_width_trick(var.zerowidth1 - lenstr, '0', i);
+    if (lenstr == 0 && var.precision_width2 >= 0)
+        ft_strlen(str);
+    else
+        ft_putstr(str, i);
+    if (var.width < 0 && var.precision_width2 < (var.width * -1) && lenstr >= var.precision_width2 && var.precision_width2 > 0)
+        ft_width_trick((var.width * -1) - lenstr, ' ', i);
+    else if (var.width < 0 && var.precision_width2 < (var.width * -1) && lenstr < var.precision_width2 && var.precision_width2 > 0) 
+        ft_width_trick((var.width * -1) - var.precision_width2, ' ', i);
+    else if (var.width < 0 && var.precision_width2 <= 0)
+        ft_width_trick((var.width * -1) - lenstr, ' ', i);
+    if (var.zerowidth1 < 0 && var.precision_width2 <= 0)
+        ft_width_trick((var.zerowidth1 * -1) - lenstr, ' ', i);
+}
+
+void    handle_p(char  *str, s_printf var, int *i)
+{
+    int lenstr;
+    
+    str = ft_strjoin("0x", str);
+    if (str[2] == '0' && str[3] == '\0' && var.precision_width2 == 0)
+        lenstr = 2;
+    else
+        lenstr = ft_strlen(str);
+    
+    if (var.width > var.precision_width2 && var.precision_width2 >= lenstr)
+        ft_width_trick(var.width - var.precision_width2, ' ', i);
+    else if (var.width > var.precision_width2 && var.precision_width2 < lenstr)
+        ft_width_trick(var.width - lenstr, ' ', i);
+    if (var.zerowidth1 > 0 && var.precision_width2 >= lenstr)
+        ft_width_trick(var.zerowidth1 - var.precision_width2, ' ', i);
+    else if (var.zerowidth1 > 0 && var.precision_width2 < lenstr && var.precision_width2 >= 0)
+        ft_width_trick(var.zerowidth1 - lenstr, ' ', i);
+    if(var.precision_width2 >= 0)
+         ft_width_trick(var.precision_width2 - lenstr, '0', i);
+    if (var.zerowidth1 > 0 && var.precision_width2 < 0)
+        ft_width_trick(var.zerowidth1 - lenstr, '0', i);
+    if (lenstr == 2 && var.precision_width2 == 0)
+        ft_putstr("0x", i);
+    else
+        ft_putstr(str, i);
+    if (var.width < 0 && var.precision_width2 < (var.width * -1) && lenstr >= var.precision_width2 && var.precision_width2 > 0)
+        ft_width_trick((var.width * -1) - lenstr, ' ', i);
+    else if (var.width < 0 && var.precision_width2 < (var.width * -1) && lenstr < var.precision_width2 && var.precision_width2 > 0) 
+        ft_width_trick((var.width * -1) - var.precision_width2, ' ', i);
+    else if (var.width < 0 && var.precision_width2 <= 0)
+        ft_width_trick((var.width * -1) - lenstr, ' ', i);
+    if (var.zerowidth1 < 0 && var.precision_width2 <= 0)
+        ft_width_trick((var.zerowidth1 * -1) - lenstr, ' ', i);
+}
+
+void    handle_char(va_list argptr, s_printf var, int *i)
+{
+    char c;
+    
+    c = va_arg(argptr, int);
+    if (var.width >= 0)
+    {
+        ft_width_trick(var.width - 1, ' ', i);
+    }
+    ft_putchar(c, i);
+    if(var.width < 0)
+    {
+        ft_width_trick((var.width * -1) - 1, ' ', i);
+    }
+}
+
+void    handle_per(s_printf var, int *i)
+{
+    if (var.width >= 0)
+    {
+        ft_width_trick(var.width - 1, ' ', i);
+    }
+    if (var.zerowidth1 >= 0)
+         ft_width_trick(var.zerowidth1 - 1, '0', i);
+    ft_putchar(var.specifier, i);
+    if(var.width < 0)
+        ft_width_trick((var.width * -1) - 1, ' ', i);
+    if (var.zerowidth1 < 0)
+         ft_width_trick((var.zerowidth1 * -1) - 1, ' ', i);
+}
 
 void    handle_percent(const char  **fmt, va_list argptr, int   *i)
 {
+    char *str;
     s_printf    var;
-    int     nbr;
-    
+    int nbr;
     
     var = ft_getaftermod(fmt, argptr);
-    if (var.specifier == 'd' || var.specifier == 'i')
-        nbr = va_arg(argptr, int);
-        
-    if (var.width >= 0 && var.precision_width1 == 0 && var.flags == 0)
-    {
-        if (var.width2 > 0)
-            ft_width_trick(var.width - var.width2, ' ', i);
-        else
-            ft_width_trick(var.width - len_num(nbr), ' ', i);
-    }
-    if (var.width >= 0 && var.precision_width1 == 1 && var.flags == 0)
-    {
-        if (var.width2 > 0)
-            ft_width_trick(var.width - var.width2, '0', i);
-        else
-            ft_width_trick(var.width - len_num(nbr), '0', i);
-    }
-    if (var.width2 >= 0 && var.precision_width2 == 0)
-        ft_width_trick(var.width2 - len_num(nbr), ' ', i);
-        
-    if (var.width2 >= 0 && var.precision_width2 == 1)
-        ft_width_trick(var.width2 - len_num(nbr), '0', i);
-        
+    
     if (var.specifier == 's')
-        ft_putstr(va_arg(argptr, char*), i);
-    else if (var.specifier == 'x')
-        ft_putstr(decToBinary(va_arg(argptr, int), 1), i);
+    {
+        str = va_arg(argptr,char *);
+        handle_string(str, var, i);
+    }
+    else if (var.specifier == 'x' || var.specifier == 'X')
+    {
+        if (var.specifier == 'x')
+            str = decToBinary(va_arg(argptr, int), 1);
+        else
+            str = decToBinary(va_arg(argptr, int), 0);
+        handle_x(str, var, i);
+    }
     else if (var.specifier == 'd' || var.specifier == 'i')
-        ft_putnbr(nbr, i);
+    {
+        nbr = va_arg(argptr, int);
+        handle_int(nbr, var, i);
+    }
     else if (var.specifier == 'c')
-        ft_putchar(va_arg(argptr, int), i);
+        handle_char(argptr, var, i);
+    else if (var.specifier == 'p')
+    {
+        str = decToBinary_p(va_arg(argptr, int), 1);
+        handle_p(str, var, i);
+    }
     else if (var.specifier == 'u')
-        ft_putunsigned(va_arg(argptr, unsigned int), i);
+        handle_int(va_arg(argptr, unsigned int), var ,i);
+    else if (var.specifier == '%')
+        handle_per(var, i);
     else
         ft_putchar(var.specifier, i);
-    if (var.flags == 1 && var.width >= 0)
-    {
-        if (var.width2 > 0)
-            ft_width_trick(var.width - var.width2, ' ', i);
-        else
-            ft_width_trick(var.width - len_num(nbr), ' ', i);
-    }
-    /*if (var.flags == 1 && var.width2 >= 0)
-        ft_width_trick(var.width2 - len_num(nbr), ' ', i);*/
 }
